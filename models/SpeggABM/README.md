@@ -84,17 +84,17 @@ Here are the main events in the simulation:
 3. Calculate the distance of susceptible agents to infectious ones, then apply the infectious likelihood to determine what among those susceptible ones are going to be next infectious agents:
       - Number of contacts is calculated as:
 
-      $$
-      NC = \sum_{i=0}^{S(t)} : \sum_{j=0}^{I(t)} \text{ceil}(\max(1 - \frac{d_{ij}}{r}, 0))
-      $$
+$$
+NC = \sum_{i=0}^{S(t)} : \sum_{j=0}^{I(t)} \text{ceil}(\max(1 - \frac{d_{ij}}{r}, 0))
+$$
 
       with S, I as number of susceptible and infected agents, respectively; d as the distance between 2 agents; r as the radius needed for infection to happen.
 
       - Determine if susceptible agents turn infectious:
 
-      $$
-      IST = \sum_{i=0}^{S(t)} : \text{ceil}(\max((1 - p)^{NC} - \sigma, 0))
-      $$
+$$
+IST = \sum_{i=0}^{S(t)} : \text{ceil}(\max((1 - p)^{NC} - \sigma, 0))
+$$
 
       where p is the infected probability; $\sigma$ as a uniformly random number.
 
@@ -114,20 +114,20 @@ Instead of generating training dataset from simulation, this will generate data 
 
       Here is the description of how it works:
 
-      $$
-      \begin{bmatrix}
-      \frac{dS(t)}{dt} \\ \frac{dI(t)}{dt} \\ \frac{dR(t)}{dt}
-      \end{bmatrix} = 
-      \begin{bmatrix}
-            -\beta & -\sigma \cdot w \\
-            \beta & -\tau + \sigma \cdot w \\
-            0 & \tau
-      \end{bmatrix}
-      \times
-      \begin{bmatrix}
-            S(t) \cdot I(t) \\ I(t)
-      \end{bmatrix}
-      $$
+$$
+\begin{bmatrix}
+\frac{dS(t)}{dt} \\ \frac{dI(t)}{dt} \\ \frac{dR(t)}{dt}
+\end{bmatrix} = 
+\begin{bmatrix}
+      -\beta & -\sigma \cdot w \\
+      \beta & -\tau + \sigma \cdot w \\
+      0 & \tau
+\end{bmatrix}
+\times
+\begin{bmatrix}
+      S(t) \cdot I(t) \\ I(t)
+\end{bmatrix}
+$$
 
       $\beta$ is the infection rate, $\tau$ is the recovering rate, $\sigma$ is random noise, $w$ is a normal distribution $N(0, 1)$. with one constraint that if these values exceed below 0 or over 1, clip those to only 0 or 1. The training data is also density, or proportion of S-I-R agents out of the population.
 
