@@ -116,7 +116,9 @@ Here is the description of how it works:
 
 $$
 \begin{bmatrix}
-\frac{dS(t)}{dt} \\ \frac{dI(t)}{dt} \\ \frac{dR(t)}{dt}
+      \frac{dS(t)}{dt} \\ 
+      \frac{dI(t)}{dt} \\ 
+      \frac{dR(t)}{dt}
 \end{bmatrix} = 
 \begin{bmatrix}
       -\beta & -\sigma \cdot w \\
@@ -125,7 +127,8 @@ $$
 \end{bmatrix}
 \times
 \begin{bmatrix}
-      S(t) \cdot I(t) \\ I(t)
+      S(t) \cdot I(t) \\ 
+      I(t)
 \end{bmatrix}
 $$
 
