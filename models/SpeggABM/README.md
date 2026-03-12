@@ -57,11 +57,11 @@ ABM Simulation → Case dataset → Want to learn p, t, sigma
 > To understand how `SIR` model is structured at a deeper level, it is necessary to break down each class in that project.
 
 ### `SIR` classes breakdown
-#### `Vector` class in [`/include/vector.py`](include/vector.py)
+#### `Vector` class in [`/include/vector.py`](/include/vector.py)
 
 This is the class that contains a field indicating `x` position and another indicating the `y` position. Basic operations like addition, subtraction, multiplication, and division, even absolute value are overriden to work with other `Vector` objects.
 
-#### `Agent` class in [`models/SIR/ensemble_training/ABM.py`](models/SIR/ensemble_training/ABM.py)
+#### `Agent` class in [`models/SIR/ensemble_training/ABM.py`](/models/SIR/ensemble_training/ABM.py)
 
 This class abstracts a moving agent within an epidemiological population. Each instance of this class has a `Vector` indicating their locations in space, as well as its movement within space is also dictated by these three methods:
 
@@ -69,7 +69,7 @@ This class abstracts a moving agent within an epidemiological population. Each i
 - `move_in_periodic_space(self, direction: Vector, space: Union[Vector, Sequence])`: Moves in the periodic space, its meaning is vague for now but the key idea is that they have to move somehow.
 - `move_randomly_in_space(...)`: Arguments are not shown here. Moves the agent normally randomly.
 
-#### `SIR_ABM` class in [`models/SIR/ensemble_training/ABM.py`](models/SIR/ensemble_training/ABM.py)
+#### `SIR_ABM` class in [`models/SIR/ensemble_training/ABM.py`](/models/SIR/ensemble_training/ABM.py)
 
 This class simulates a population of `Agent`s, whose main attributes include:
 
@@ -102,7 +102,7 @@ where p is the infected probability; $\sigma$ as a uniformly random number.
 - Update those susceptible into infectious.
 - For recovering state, any infected agents that have gone through enough time steps specified by `t_infectious` will turn recovered, thus being transferred to the recovered category.
 
-#### [`DataGeneration.py`](models/SIR/ensemble_training/DataGeneration.py)
+#### [`DataGeneration.py`](/models/SIR/ensemble_training/DataGeneration.py)
 
 This file provides utility functions to generate training datasets as well as prepare `h5` groups and storage. These functions include:
 
@@ -139,7 +139,7 @@ Either returns training dataset from simulation or ODE based on user's configura
 
 Also, one role of this `DataGeneration.py` is that all its functions receive a premature `h5` object and then fill it up with necessary attributes such as `coords`,... so that the neural network training process can write training information into it after each epoch.
 
-#### `SIR_NN` in [`models/SIR/ensemble_training/NN.py`](models/SIR/ensemble_training/NN.py)
+#### `SIR_NN` in [`models/SIR/ensemble_training/NN.py`](/models/SIR/ensemble_training/NN.py)
 
 This class uses one of the [base models](include/base_model.py), which contains multiple simple linear layers organized sequentially, to train and make prediction of three parameters, probability of infection $\beta$, time of infection $t$, and noise $\sigma$.
 
@@ -149,6 +149,8 @@ The training dataset is passed into the neural network so the calculation gets f
 
 > [!NOTE]
 > `current_density` as in neural network module is pulled from the training dataset, which I described as proportions of S-I-R agents out of the population.
+
+Potentially, for each batch in one training epoch, the current batch is used, with predicted parameters, to calculated predicted status for the next batches. Then such a epidemic prediction will be compared against the real data of next batches to get to the loss value.
 
 After each epoch, the `write_data()` method will write current predicted parameters ($\beta$, $t$, and $\sigma$), and current loss into the defined `h5` group, ready for plotting.
 
