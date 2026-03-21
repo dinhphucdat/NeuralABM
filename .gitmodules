@@ -1,0 +1,4 @@
+[submodule "models/SpeggABM/externals"]
+	path = models/SpeggABM/spegg/
+	url = https://github.com/dinhphucdat/spegg.git
+	branch = refactor_code
