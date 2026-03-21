@@ -8,3 +8,8 @@ __pycache__/
 .coverage
 coverage
 coverage.json
+**/final_data.csv
+**/initial_data.csv
+**/Tutorial_Simulation
+!**/Tutorial_Simulation/
+**/Tutorial_Simulation/build/
