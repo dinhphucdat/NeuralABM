@@ -1,5 +1,6 @@
 #!/home/wormlab/miniforge3/bin/python
-
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "build"))
 import Tutorial_Simulation
 import numpy as np
 import matplotlib.pyplot as plt
@@ -231,5 +232,6 @@ def collect_values():
     print(f"{'t_step':<10}{'deme1':<10}{'deme2':<10}{'deme3':<10}{'deme4':<10}")
     for i, x in enumerate(v):
         print(f"{i:<10}{x[0]:<10.4f}{x[1]:<10.4f}{x[2]:<10.4f}{x[3]:<10.4f}")
-        
-collect_values()
+
+if __name__ == "__main__":       
+    collect_values()
