@@ -2,3 +2,6 @@
 	path = models/SpeggABM/spegg/
 	url = https://github.com/dinhphucdat/spegg.git
 	branch = refactor_code
+[submodule "models/SpeggABM/snpArcher"]
+	path = models/SpeggABM/snpArcher
+	url = https://github.com/harvardinformatics/snpArcher.git

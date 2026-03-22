@@ -12,4 +12,6 @@ sys.path.append(
 from Tutorial_Simulation import simulate
 
 from .ABM import simulate_population
+from .DataGeneration import *
+from .utils import *
 
