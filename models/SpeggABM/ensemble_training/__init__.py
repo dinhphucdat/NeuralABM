@@ -1,6 +1,6 @@
 import sys, os
-from collections.abc import Iterable
 import numpy as np
+from collections.abc import Iterable
 
 sys.path.append(
     os.path.join(
@@ -11,7 +11,7 @@ sys.path.append(
 
 from Tutorial_Simulation import simulate
 
+from .utils import *
 from .ABM import simulate_population
 from .DataGeneration import *
-from .utils import *
 
