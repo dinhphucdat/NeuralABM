@@ -47,7 +47,12 @@ def generate_training_data(cfgs : dict, data : list):
 
     log.info("Generating training data from processed output...")
 
-    training_col = [row[header.index(cfgs['column_name'])] for row in rows]
+    col_idx_or_name = cfgs['column_name_or_idx']
+    isindex = cfgs['column_index']
+
+    training_col = [
+        row[header.index(col_idx_or_name) if not isindex else col_idx_or_name] for row in rows
+    ]
 
     point = np.mean(training_col)
     log.info(f"Generated training data point: {point}")
