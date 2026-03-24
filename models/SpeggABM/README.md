@@ -161,3 +161,11 @@ Alternative to training data using a Neural Network is to use Stochastic Gradien
 ## Application - How that workflow can be translated to sPEGG
 
 This will be done later because there are still progresses later on to determine what parameters are and how these should be trained. However, there is one thing that may be different with this `SIR` approach, which we might see that our sPEGG ABM also serves as another layer in the Neural Network, but another direction could be to use sPEGG as a data generator, then we start to train NN to learn the underlying parameters that have driven the evolutionary process.
+
+### How to integrate this to Neural Network
+
+A neural network will be used to predict the parameters powering the SPEGG simulation, which will then simulate those predicted parameters back to its simulated (constructed) population used to compare with the initial population that serves as the training dataset.
+
+Now notice that the training loop works in batches, so the neural network can only make prediction within this tight time step window, for example, between 1 and 5, 6 and 10. So then the SPEGG simulation model must only simulate a number of time steps equal to the batch size. Eventually, such a simulated tight time step window will be compared against that corresponding window in the initial training data.
+
+Tip for handling batch size and time step mismatch: Take the first simulated time steps equal to batch size, truncate others following.

@@ -3,3 +3,55 @@ Data:
   column_index: True
   column_name_or_idx: 5 
   training_data_shape: [2, 4]
+
+Training:
+  num_epochs: 100
+  batch_size: 4
+  learning_rate: 0.01
+  simulated_parameters:
+    count: 20
+    name_mapping:
+      0: M_reproductive_advantage
+      1: F_reproductive_advantage
+      2: TARGET_CROWN_COLOR
+      3: CROWN_COLOR_DECAY
+      4: phen 1 gene phen map constant
+      5: phen 1 gene phen map coef 0
+      6: phen 1 gene phen map coef 1
+      7: phen 2 gene phen map constant
+      8: phen 2 gene phen map coef 0
+      9: phen 3 gene phen map constant
+      10: phen 3 gene phen map coef 0
+      11: loci 1 recombination rates
+      12: loci 2 recombination rates
+      13: loci 3 recombination rates
+      14: loci 1 deme mutation rates
+      15: loci 2 deme mutation rates
+      16: loci 3 deme mutation rates
+      17: loci 1 deme mutation magnitudes
+      18: loci 2 deme mutation magnitudes
+      19: loci 3 deme mutation magnitudes
+    # NOTE -- we need to have as many scaling factors as how many parameters 
+    # we are simulating, and they need to be in the same order as the parameters 
+    # in the name mapping above
+    scaling_factors:
+      0: 1.0
+      1: 1.0
+      2: 1.0
+      3: 1.0
+      4: 1.0
+      5: 1.0
+      6: 1.0
+      7: 1.0
+      8: 1.0
+      9: 1.0
+      10: 1.0
+      11: 1.0
+      12: 1.0
+      13: 1.0
+      14: 1.0
+      15: 1.0
+      16: 1.0
+      17: 1.0
+      18: 1.0
+      19: 1.0
