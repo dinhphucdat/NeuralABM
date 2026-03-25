@@ -1,5 +1,7 @@
 import sys, os
 import numpy as np
+import torch
+import h5py as h5
 from collections.abc import Iterable
 
 sys.path.append(
@@ -9,9 +11,16 @@ sys.path.append(
     )
 )
 
+SIMULATION_CONF = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), 
+    "Tutorial_Simulation/"
+)
+
 from Tutorial_Simulation import simulate
 
 from .utils import *
 from .ABM import simulate_population
 from .DataGeneration import *
+from .NN import *
+
 

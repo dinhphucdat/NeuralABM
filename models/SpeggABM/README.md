@@ -169,3 +169,11 @@ A neural network will be used to predict the parameters powering the SPEGG simul
 Now notice that the training loop works in batches, so the neural network can only make prediction within this tight time step window, for example, between 1 and 5, 6 and 10. So then the SPEGG simulation model must only simulate a number of time steps equal to the batch size. Eventually, such a simulated tight time step window will be compared against that corresponding window in the initial training data.
 
 Tip for handling batch size and time step mismatch: Take the first simulated time steps equal to batch size, truncate others following.
+
+#### Generating training dataset from `snpArcher` and `vcftools`
+
+In the [`DataGeneration.py`](/models/SpeggABM/ensemble_training/DataGeneration.py), there is a function that executes the [`setup_spegg.sh`](/models/SpeggABM/setup_spegg.sh) script, which essentially runs the `snpArcher` tools to create `vcf` files and then runs `vcftools` to parse those `vcf` files, to generate a matrix that is to be the training dataset.
+
+#### Neural network architecture & pipeline
+
+

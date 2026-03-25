@@ -26,7 +26,7 @@ def simulate_population(params : Iterable):
 
     demewide_parameters = np.array([
         params[:4]
-    ], dtype=np.float32)
+    ], dtype=np.float32).T
 
     # print(demewide_parameters.shape)
 
@@ -62,11 +62,16 @@ def simulate_population(params : Iterable):
         params[17:18], params[18:19], params[19:20]
     ], dtype=np.float32)
 
+    os.chdir(SIMULATION_CONF)
 
-    return simulate(
+    constructed_pop =  simulate(
         parameter_names, demewide_parameters, species_specific_values, 
         phenotype_names, genotype_phenotype_parameter_names_all_phenotypes, 
         deme_specific_phenotype_parameters_all_phenotypes, 
         loci_names, recombination_rates, deme_specific_mutation_rates, 
         deme_specific_mutation_magnitudes
     )
+
+    os.chdir(os.path.dirname(__file__))
+
+    return constructed_pop

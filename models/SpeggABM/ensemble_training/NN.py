@@ -34,7 +34,7 @@ class SpeggABM_NN:
         :param h5group (h5.Group): The output file group to write data to
         :param neural_net: The neural network
         :param loss_function (dict): the loss function to use
-        :param to_learn: the list of parameter names to learn
+        :param to_learn: the list of parameter names to learn (name, idx)
         :param true_parameters: the dictionary of true parameters
         :param training_data: the training data to use
         :param write_every: write every iteration
@@ -168,13 +168,13 @@ class SpeggABM_NN:
             # for each time step, which would be computationally expensive.
             predicted_parameters = self.neural_net(
                 torch.flatten(self.training_data[batch_idx : self.batches[batch_no + 1]])
-            )
+            ).clone().detach().cpu().numpy()
 
             # Get the parameters:
-            for i, param in enumerate(predicted_parameters):
+            for param, i in self.to_learn.items():
                 self.simulated_parameters[i] = (
-                    param * 
-                    self.scaling_factors.get(i, 1.0)
+                    predicted_parameters[i] * 
+                    self.scaling_factors.get(param, 1.0)
                 )
 
 
@@ -212,5 +212,5 @@ class SpeggABM_NN:
             self._dset_loss[-1] = self.current_loss
             self.dset_parameters.resize(self.dset_parameters.shape[0] + 1, axis=0)
             self.dset_parameters[-1, :] = [
-                self.simulated_parameters[self.to_learn[p]] for p in self.to_learn.keys()
+                self.simulated_parameters[i] for _, i in self.to_learn.items()
             ]

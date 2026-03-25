@@ -25,10 +25,10 @@ paths:
 metadata:
   description: SpeggABM model with Neural core
   long_description: >
-    This model calibrates an SpeggABM model of infection using a neural network.
+    This model calibrates an SpeggABM model of population dynamics using a neural network.
   version: "0.1"
-  author: Thomas Gaskin
-  license: LGPLv3+
+  author: Dat Dinh
+  license: ~
   language: python3
   requirements:
     - ruamel.yaml
