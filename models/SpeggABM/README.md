@@ -176,4 +176,31 @@ In the [`DataGeneration.py`](/models/SpeggABM/ensemble_training/DataGeneration.p
 
 #### Neural network architecture & pipeline
 
+We have a real-world population time series record that serves as the training dataset for our neural network model, which will then predict our set of simulation parameters to feed into our sPEGG simulation model. Our goal is that whenever we present such a neural network model with any other real-life population record, it must be able to __predict the simulation parameters such that they should make the sPEGG simulation model output exactly the *same predicted population record as the real one*__.
+
+> [!NOTE]
+> **Simulation parameters:** These are the parameters defined in `deme_config.txt` read by the simulation program.
+
+Here is the architecture's diagram:
+
+```mermaid
+graph TD;
+    subgraph "Spegg NN"
+    A(Real-life population time series record) --> B(Neural Net);
+    B --> C(Simulation parameters);
+    C --> D(SPEGG Simulation Model);
+    D --> E(Reconstructed population record);
+    E --> F(Calculate loss);
+    A --> F;
+    F --> G(Loss value);
+    G -- back propagation --> B;
+    end
+```
+
+#### Simulation model linking
+
+Once the last layer of the Neural Network calculates the simulation parameters, those will be passed into the [`simulate_population()`](models/SpeggABM/ensemble_training/ABM.py) function. This function links this set of simulation parameters to simulation code in C++/CUDA, which will then produce the reconstructed population record and return it to the Python code, so then the Neural Network model can compare it to the real-life population data and calculate the loss.
+
+Such C++/CUDA code is structured inside the [`Tutorial_Simulation`](models/SpeggABM/Tutorial_Simulation) directory.
+
 
