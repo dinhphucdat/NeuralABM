@@ -38,7 +38,8 @@ std::vector<std::vector<float>> simulate(
 	const StringVector& 		lociNames, 
 	const py::array_t<float>& 	recombinationRates, 
 	const py::array_t<float>&  	demeSpecificMutationRates, 
-	const py::array_t<float>&	demeSpecificMutationMagnitudes
+	const py::array_t<float>&	demeSpecificMutationMagnitudes, 
+	const bool&					run_alone
 )
 	{
 	Penguin_Drift_Simulator penguin_model(
@@ -53,7 +54,7 @@ std::vector<std::vector<float>> simulate(
 		demeSpecificMutationRates, 
 		demeSpecificMutationMagnitudes
 	);
-	return penguin_model.run_return();
+	return penguin_model.run_return(run_alone);
 
 	}
 

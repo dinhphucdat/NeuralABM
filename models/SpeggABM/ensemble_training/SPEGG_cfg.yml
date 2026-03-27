@@ -8,7 +8,8 @@ Training:
   num_epochs: 100
   seed: 42
   batch_size: 4
-  loss_function: MSELoss
+  loss_function: 
+    name: MSELoss
   learning_rate: 0.01
   to_learn:
     - M_reproductive_advantage

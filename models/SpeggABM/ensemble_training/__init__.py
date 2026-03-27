@@ -1,6 +1,7 @@
 import sys, os
 import numpy as np
 import torch
+from torch.distributions import Normal
 import h5py as h5
 from collections.abc import Iterable
 

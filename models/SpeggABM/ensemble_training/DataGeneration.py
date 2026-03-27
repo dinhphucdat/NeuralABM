@@ -28,7 +28,7 @@ def process_output(output : str, delimiter : str = "\t") -> list:
         data.append([float(v) if is_float(v) else v for v in values])
     return data
 
-def generate_training_data(cfgs : dict, data : list):
+def generate_training_data(cfgs : dict, data : list) -> torch.Tensor:
     """
     After parsing the output from the sequencing software 
     into a list of lists (first one is header), this function 
@@ -57,8 +57,5 @@ def generate_training_data(cfgs : dict, data : list):
     point = np.mean(training_col)
     log.info(f"Generated training data point: {point}")
 
-    return np.full((cfgs['training_data_shape'][0], 
-                    cfgs['training_data_shape'][1]), point, dtype=np.float32)
-
-
-
+    return torch.tensor(np.full((cfgs['training_data_shape'][0], 
+                    cfgs['training_data_shape'][1]), point, dtype=np.float32))

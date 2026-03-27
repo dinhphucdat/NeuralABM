@@ -1,6 +1,6 @@
 from ensemble_training import *
 
-def simulate_population(params : Iterable):
+def simulate_population(params : Iterable) -> torch.Tensor:
     """
     Docstring for objective_function
     
@@ -69,9 +69,9 @@ def simulate_population(params : Iterable):
         phenotype_names, genotype_phenotype_parameter_names_all_phenotypes, 
         deme_specific_phenotype_parameters_all_phenotypes, 
         loci_names, recombination_rates, deme_specific_mutation_rates, 
-        deme_specific_mutation_magnitudes
+        deme_specific_mutation_magnitudes, False
     )
 
     os.chdir(os.path.dirname(__file__))
 
-    return constructed_pop
+    return torch.tensor(constructed_pop, dtype=torch.float32)

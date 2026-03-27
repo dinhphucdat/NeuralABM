@@ -28,7 +28,7 @@ metadata:
     This model calibrates an SpeggABM model of population dynamics using a neural network.
   version: "0.1"
   author: Dat Dinh
-  license: ~
+  license: LGPLv3+
   language: python3
   requirements:
     - ruamel.yaml

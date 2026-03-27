@@ -51,7 +51,17 @@ class Penguin_Drift_Simulator : public Simulation
 
 		void run();
 		
-		std::vector<std::vector<float>> run_return();
+		/**
+		 * @brief Run the simulation and return the mean phenotypes by deme 
+		 * at each time step as a 2D vector. The outer vector has the size of 
+		 * number of time steps, and the inner vector has the size of number 
+		 * of demes, with each element being the mean phenotype value for that 
+		 * deme at that time step.
+		 * 
+		 * @param run_alone if true, it will also generates csv files of simulated population record and print out the simulation progress
+		 * @return std::vector<std::vector<float>> 
+		 */
+		std::vector<std::vector<float>> run_return(const bool& run_alone = true);
 	private:
 		inds_stochastic **array;
 		PenguinStatistics *stats_penguins;

@@ -61,10 +61,10 @@ class SpeggABM_NN:
 
         # Should check that the output of neural net should have the same number of 
         # parameters as the length of to_learn
-        if (len(self.to_learn.keys()) != self.neural_net.layers[-1].out_features
-            or len(self.to_learn.keys() != len(scaling_factors))):
+        if (len(self.to_learn) != self.neural_net.layers[-1].out_features
+            or len(self.to_learn) != len(scaling_factors)):
             raise ValueError(
-                f"The number of parameters to learn ({len(self.to_learn.keys())})" + 
+                f"The number of parameters to learn ({len(self.to_learn)})" + 
                   f" should match the output size of the neural net ({self.neural_net.layers[-1].out_features})."
             )
 
@@ -120,8 +120,8 @@ class SpeggABM_NN:
         # Write the parameter predictions after every batch
         self.dset_parameters = self._h5group.create_dataset(
             "parameters",
-            (0, len(self.to_learn.keys())),
-            maxshape=(None, len(self.to_learn.keys())),
+            (0, len(self.to_learn)),
+            maxshape=(None, len(self.to_learn)),
             chunks=True,
             compression=3,
         )
@@ -168,10 +168,20 @@ class SpeggABM_NN:
             # for each time step, which would be computationally expensive.
             predicted_parameters = self.neural_net(
                 torch.flatten(self.training_data[batch_idx : self.batches[batch_no + 1]])
-            ).clone().detach().cpu().numpy()
+            )
+
+            uncertainty = torch.full_like(predicted_parameters, 0.1)
+            dist = Normal(predicted_parameters, uncertainty)
+
+            predicted_parameters = dist.rsample()
+            log_prob = dist.log_prob(predicted_parameters).sum()
+
+
+            # 3. Run Black-Box ABM (No gradients here)
+            
 
             # Get the parameters:
-            for param, i in self.to_learn.items():
+            for i, param in enumerate(self.to_learn):
                 self.simulated_parameters[i] = (
                     predicted_parameters[i] * 
                     self.scaling_factors.get(param, 1.0)
@@ -181,15 +191,24 @@ class SpeggABM_NN:
             # Reconstructed the population with simulation with the predicted parameters
             predicted_pop = simulate_population(self.simulated_parameters.detach().cpu().numpy())
 
+
             # Truncate the constructed population to match its number of 
             # time steps with the number of time steps in the training data batch
             predicted_pop = predicted_pop[: self.batch_size]
+
+            # TODO: there will be parameters config that will drive population to be NaN!
+            predicted_pop = torch.nan_to_num(predicted_pop, 1e-2)
+
 
             # Calculate the loss between the predicted population and the training data batch
             loss = self.loss_function(
                 predicted_pop, 
                 self.training_data[batch_idx : self.batches[batch_no + 1]]
             )
+
+            reward = -loss
+
+            loss = -log_prob * reward 
 
             loss.backward()
             self.neural_net.optimizer.step()
@@ -212,5 +231,5 @@ class SpeggABM_NN:
             self._dset_loss[-1] = self.current_loss
             self.dset_parameters.resize(self.dset_parameters.shape[0] + 1, axis=0)
             self.dset_parameters[-1, :] = [
-                self.simulated_parameters[i] for _, i in self.to_learn.items()
+                self.simulated_parameters[i].detach().cpu().numpy() for i in range(len(self.to_learn))
             ]

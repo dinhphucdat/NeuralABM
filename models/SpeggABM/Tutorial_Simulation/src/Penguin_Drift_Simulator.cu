@@ -82,19 +82,19 @@ void Penguin_Drift_Simulator::initialize_classes(
 	);
 
 	stats_penguins = new PenguinStatistics(demes);
-
-	array[0]-> exportCsv("initial_data.csv");
 	}
 
 void Penguin_Drift_Simulator::run() {}
 
 
-std::vector<std::vector<float>> Penguin_Drift_Simulator::run_return()
+std::vector<std::vector<float>> Penguin_Drift_Simulator::run_return(const bool& run_alone)
 	{
+	if (run_alone) {
+		array[0]-> exportCsv("initial_data.csv");
+	}
 	std::vector<std::vector<float>> mean_demes_vec(nsteps, std::vector<float>(demes, 0.0f));
 
-	for (int t = 0 ; t < nsteps ; t++) 
-		{
+	for (int t = 0 ; t < nsteps ; t++) {
 		for (int i = 0 ; i < nspecies ; i++) 
 			{
 			array[i]->addKids();
@@ -107,9 +107,9 @@ std::vector<std::vector<float>> Penguin_Drift_Simulator::run_return()
 		stats_penguins->calculate_mean_genotypes_by_deme(array[0], genotype_index_of_interest);
 		// std::cout << "The average genotypes at locus 1 for the two demes are:" << std::endl;
 		// stats_penguins->print_mean_genotypes_by_deme();
-
-		array[0]-> exportCsv("final_data.csv");
-
+		if (run_alone) {
+			array[0]-> exportCsv("final_data.csv");
+		}
 		// returns the mean phenotypes of all demes
 		thrust::device_vector<float> mean_demes = stats_penguins->get_mean_phenotypes_by_deme();
 
@@ -117,8 +117,10 @@ std::vector<std::vector<float>> Penguin_Drift_Simulator::run_return()
 		std::vector<float> mean_demes_host(mean_demes.begin(), mean_demes.end());
 		mean_demes_vec[t] = mean_demes_host;
 
-		std::cout << "\rIteration " << (t + 1) << "/" << nsteps << std::flush;
+		if (run_alone) {
+			std::cout << "\rIteration " << (t + 1) << "/" << nsteps << std::flush;
 		}
+	}
 	std::cout << std::endl;
 
 	

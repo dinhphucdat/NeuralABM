@@ -1,4 +1,7 @@
+#!/home/wormlab/miniforge3/bin/python3
 from ruamel.yaml import YAML
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from ensemble_training import *
 
 from os.path import dirname as up
@@ -57,12 +60,12 @@ if __name__ == "__main__":
     )
 
     # Get the random number generator
-    log.note("   Creating global RNG ...")
+    log.info("   Creating global RNG ...")
     rng = np.random.default_rng(training_cfgs["seed"])
     np.random.seed(training_cfgs["seed"])
     torch.random.manual_seed(training_cfgs["seed"])
 
-    log.note(f"   Creating output file at:\n        {overall_cfgs['output_path']}")
+    log.info(f"   Creating output file at:\n        {overall_cfgs['output_path']}")
     h5file = h5.File(overall_cfgs["output_path"], mode="w")
     h5group = h5file.create_group(model_name)
 
@@ -72,15 +75,15 @@ if __name__ == "__main__":
     training_data = generate_training_data(
         data_gen_cfgs, 
         process_output(out.stdout, delimiter=data_gen_cfgs['delimiter'])
-    )
+    ).to(device)
 
     # Initialise the neural net
     log.info("   Initializing the neural net ...")
 
     # Initialize the neural network object
-    net = base.BaseNN(
+    net = base.FeedForwardNN(
         input_size=training_data.shape[1],
-        output_size=len(training_cfgs["Training"]["to_learn"]),
+        output_size=len(training_cfgs["to_learn"]),
         num_layers= nn_cfgs.get("num_layers"),
         nodes_per_layer= nn_cfgs.get("nodes_per_layer"),
         activation_funcs= nn_cfgs.get("activation_funcs"),
@@ -97,7 +100,7 @@ if __name__ == "__main__":
         true_parameters=training_cfgs.get("true_parameters", {}),
         write_every=training_cfgs.get("write_every", 1),
         write_start=training_cfgs.get("write_start", 1),
-        training_data=training_data.to(device),
+        training_data=training_data,
         batch_size=training_cfgs.get("batch_size", 4),
         scaling_factors=training_cfgs.get("scaling_factors", {})
     )
@@ -106,7 +109,7 @@ if __name__ == "__main__":
     log.info(f"   Now commencing training for {training_cfgs["num_epochs"]} epochs ...")
     for i in range(training_cfgs["num_epochs"]):
         model.epoch()
-        log.progress(
+        log.info(
             f"   Completed epoch {i+1} / {training_cfgs["num_epochs"]}; "
             f"   current loss: {model.current_loss}"
         )
@@ -115,7 +118,7 @@ if __name__ == "__main__":
     log.info("   Wrapping up ...")
     h5file.close()
 
-    log.success("   All done.")
+    log.info("   All done.")
     
 
 

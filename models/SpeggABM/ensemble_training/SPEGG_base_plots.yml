@@ -183,65 +183,6 @@ loss:
       y: log
 
 # -- Animated state of the agents --------------------------------------------------------------------------------------
-state:
-  based_on:
-    - .creator.universe
-    - .plot.abm
-    - .animation.ffmpeg
-  select:
-    x:
-      path: position
-      transform:
-        - .sel: [!dag_prev , {coords: x}]
-          kwargs:
-            drop: true
-    y:
-      path: position
-      transform:
-        - .sel: [ !dag_prev , {coords: y}]
-          kwargs:
-            drop: true
-    kinds:
-      path: kinds
-      transform:
-        - .data: [!dag_prev ]
-
-  # Combine coordinates and kinds into a single Dataset
-  transform:
-    - xr.Dataset:
-      kwargs:
-        data_vars:
-          x: !dag_tag x
-          y: !dag_tag y
-          kind: !dag_tag kinds
-      tag: data
-
-  to_plot:
-    data:
-      cmap:
-        susceptible: !dag_result c_lightgreen
-        infected: !dag_result c_red
-        recovered: !dag_result c_darkgreen
-      vmin: 0
-      vmax: 2
-      size_scale: 0.0005
-  hue: kind
-  x: x
-  y: y
-  frames: time
-  # Colorbar settings
-  cmap:
-    susceptible: !dag_result c_lightgreen
-    infected: !dag_result c_red
-    recovered: !dag_result c_darkgreen
-  cbar_kwargs:
-    shrink: 0.8
-  style:
-    savefig.bbox: ~
-    axes.grid: True
-    axes.spines.top: True
-    axes.spines.right: True
-  # Animation control
 
 # -- Plot of the parameter predictions  --------------------------------------------------------------------------------
 predictions_uni:
