@@ -18,6 +18,7 @@ class SpeggABM_NN:
         h5group: h5.Group,
         neural_net: base.BaseNN,
         loss_function: dict,
+        epsilon = 1e-2, 
         to_learn: dict,
         true_parameters: dict = {},
         write_every: int = 1,
@@ -49,9 +50,19 @@ class SpeggABM_NN:
 
         self.neural_net = neural_net
         self.neural_net.optimizer.zero_grad()
-        self.loss_function = base.LOSS_FUNCTIONS[loss_function.get("name").lower()](
-            loss_function.get("args", None), **loss_function.get("kwargs", {})
+
+        # Add batch size
+        self.batch_size = batch_size
+
+        # Loss object
+        self.loss_function = Loss(
+            self.batch_size, 
+            base.LOSS_FUNCTIONS[loss_function.get("name").lower()](
+                loss_function.get("args", None), **loss_function.get("kwargs", {})
+            ), 
+            epsilon=epsilon
         )
+        
 
         self.current_loss = torch.tensor(0.0)
 
@@ -77,9 +88,6 @@ class SpeggABM_NN:
         }
 
         self.training_data = training_data
-
-        # Add batch size
-        self.batch_size = batch_size
 
         # Generate the batch ids
         batches = np.arange(0, self.training_data.shape[0], batch_size)
@@ -156,7 +164,7 @@ class SpeggABM_NN:
         length B. For instance, is B is 30, the time series is processed in 3 steps of 30 and one of 10.
 
         """
-
+        self.neural_net.optimizer.zero_grad()
         # Process the training data in batches
         for batch_no, batch_idx in enumerate(self.batches[:-1]):
             # Have to feed the whole batch into the neural network, 
@@ -167,16 +175,12 @@ class SpeggABM_NN:
             # for individual time steps, the loss would have to be calculated 
             # for each time step, which would be computationally expensive.
             predicted_parameters = self.neural_net(
-                torch.flatten(self.training_data[batch_idx : self.batches[batch_no + 1]])
+                self.training_data[batch_idx : self.batches[batch_no + 1]]
             )
 
-            uncertainty = torch.full_like(predicted_parameters, 0.1)
-            dist = Normal(predicted_parameters, uncertainty)
-
-            predicted_parameters = dist.rsample()
-            log_prob = dist.log_prob(predicted_parameters).sum()
-
-
+            # Get the sum of predicted parameter space across all time steps
+            # TODO: this is not very principled -- reconsider the logic
+            predicted_parameters = torch.sum(predicted_parameters, axis=0)
             # 3. Run Black-Box ABM (No gradients here)
             
 
@@ -189,26 +193,12 @@ class SpeggABM_NN:
 
 
             # Reconstructed the population with simulation with the predicted parameters
-            predicted_pop = simulate_population(self.simulated_parameters.detach().cpu().numpy())
-
-
-            # Truncate the constructed population to match its number of 
-            # time steps with the number of time steps in the training data batch
-            predicted_pop = predicted_pop[: self.batch_size]
-
-            # TODO: there will be parameters config that will drive population to be NaN!
-            predicted_pop = torch.nan_to_num(predicted_pop, 1e-2)
-
-
-            # Calculate the loss between the predicted population and the training data batch
+            # Loss
+            self.loss_function.batch_size = len(self.training_data[batch_idx : self.batches[batch_no + 1]])
+            
             loss = self.loss_function(
-                predicted_pop, 
-                self.training_data[batch_idx : self.batches[batch_no + 1]]
+                predicted_parameters, self.training_data[batch_idx : self.batches[batch_no + 1]]
             )
-
-            reward = -loss
-
-            loss = -log_prob * reward 
 
             loss.backward()
             self.neural_net.optimizer.step()

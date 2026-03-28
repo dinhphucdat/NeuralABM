@@ -1,4 +1,5 @@
 #!/home/wormlab/miniforge3/bin/python3
+import logging
 from ruamel.yaml import YAML
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -11,6 +12,8 @@ from dantro._import_tools import import_module_from_path
 sys.path.append(up(up(up(__file__))))
 
 base = import_module_from_path(mod_path=up(up(up(__file__))), mod_str="include")
+
+log = logging.getLogger(__name__)
 
 def load_config(config_path : str) -> dict:
     """
@@ -82,7 +85,7 @@ if __name__ == "__main__":
 
     # Initialize the neural network object
     net = base.FeedForwardNN(
-        input_size=training_data.shape[1],
+        input_size=data_gen_cfgs['training_data_shape'][-1],
         output_size=len(training_cfgs["to_learn"]),
         num_layers= nn_cfgs.get("num_layers"),
         nodes_per_layer= nn_cfgs.get("nodes_per_layer"),
@@ -96,6 +99,7 @@ if __name__ == "__main__":
         h5group=h5group,
         neural_net=net,
         loss_function=training_cfgs["loss_function"],
+        epsilon=training_cfgs["epsilon"], 
         to_learn=training_cfgs["to_learn"],
         true_parameters=training_cfgs.get("true_parameters", {}),
         write_every=training_cfgs.get("write_every", 1),

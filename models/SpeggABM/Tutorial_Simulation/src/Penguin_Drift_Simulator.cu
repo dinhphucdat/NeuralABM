@@ -119,9 +119,9 @@ std::vector<std::vector<float>> Penguin_Drift_Simulator::run_return(const bool& 
 
 		if (run_alone) {
 			std::cout << "\rIteration " << (t + 1) << "/" << nsteps << std::flush;
+			std::cout << std::endl;
 		}
 	}
-	std::cout << std::endl;
 
 	
 	return mean_demes_vec;
