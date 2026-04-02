@@ -59,7 +59,7 @@
 
   style:
     text.usetex: False   # Set to 'True' to use latex
-    font.family: 'Arial' # Set to a font family of your choice, e.g. Helvetica
+    font.family: 'DejaVu Sans' # Set to a font family of your choice, e.g. Helvetica
     mathtext.fontset:   cm
     text.latex.preamble: \usepackage{amssymb} \usepackage{amsmath}
 

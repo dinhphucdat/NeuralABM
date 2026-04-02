@@ -90,7 +90,8 @@ if __name__ == "__main__":
         num_layers= nn_cfgs.get("num_layers"),
         nodes_per_layer= nn_cfgs.get("nodes_per_layer"),
         activation_funcs= nn_cfgs.get("activation_funcs"),
-        biases=nn_cfgs.get("biases")
+        biases=nn_cfgs.get("biases"), 
+        learning_rate=nn_cfgs.get("learning_rate")
     ).to(device)
 
     # Initialize the model object
@@ -106,7 +107,8 @@ if __name__ == "__main__":
         write_start=training_cfgs.get("write_start", 1),
         training_data=training_data,
         batch_size=training_cfgs.get("batch_size", 4),
-        scaling_factors=training_cfgs.get("scaling_factors", {})
+        scaling_factors=training_cfgs.get("scaling_factors", {}),
+        param_activation_function=training_cfgs.get("activation_function", None)
     )
 
     # Train the model

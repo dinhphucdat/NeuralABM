@@ -38,7 +38,7 @@ class ABM(torch.autograd.Function):
     def backward(ctx, grad_output):
         grad_tensor : torch.Tensor = torch.zeros(ctx.input_shape)
         params = ctx.saved_params.copy()
-        params[params == 0.0] = 1.0
+        params[params < 1e-3] = 1.0
         for i in range(ctx.input_shape):
 
             params_up = params.copy()
@@ -53,7 +53,7 @@ class ABM(torch.autograd.Function):
             loss_up = ctx.loss_func(predicted_pop_up, ctx.true_records)
             loss_low = ctx.loss_func(predicted_pop_low, ctx.true_records)
 
-            grad_tensor[i] = ((loss_low - loss_up)) / (2 * ctx.epsilon)
+            grad_tensor[i] = ((loss_up - loss_low)) / (2 * ctx.epsilon)
         
         return grad_output * grad_tensor, None, None, None, None
         
@@ -81,6 +81,10 @@ def simulate_population(params : Iterable) -> torch.Tensor:
         * 18: loci 2 deme mutation magnitudes
         * 19: loci 3 deme mutation magnitudes
     """
+    # Default params
+    params = np.array([10, 10, 10, 5, 20, 10, 10, 3.3, 3.3, 10, 10, 
+                       params[0], params[1], params[2], 0.2, 0.2, 0.2, 0.25, 0.25, 0.25], dtype=np.float32)
+    
     parameter_names = ["M_reproductive_advantage", "F_reproductive_advantage","TARGET_CROWN_COLOR","CROWN_COLOR_DECAY"]
 
     demewide_parameters = np.array([

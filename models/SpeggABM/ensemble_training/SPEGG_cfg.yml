@@ -10,53 +10,116 @@ Training:
   batch_size: 25
   loss_function: 
     name: MSELoss
-  learning_rate: 0.01
-  epsilon: 1e-1
+  epsilon: 1e-2
   to_learn:
-    - M_reproductive_advantage
-    - F_reproductive_advantage
-    - TARGET_CROWN_COLOR
-    - CROWN_COLOR_DECAY
-    - phen_1_gene_phen_map_constant
-    - phen_1_gene_phen_map_coef_0
-    - phen_1_gene_phen_map_coef_1
-    - phen_2_gene_phen_map_constant
-    - phen_2_gene_phen_map_coef_0
-    - phen_3_gene_phen_map_constant
-    - phen_3_gene_phen_map_coef_0
+    #- M_reproductive_advantage
+    #- F_reproductive_advantage
+    #- TARGET_CROWN_COLOR
+    #- CROWN_COLOR_DECAY
+    #- phen_1_gene_phen_map_constant
+    #- phen_1_gene_phen_map_coef_0
+    #- phen_1_gene_phen_map_coef_1
+    #- phen_2_gene_phen_map_constant
+    #- phen_2_gene_phen_map_coef_0
+    #- phen_3_gene_phen_map_constant
+    #- phen_3_gene_phen_map_coef_0
     - loci_1_recombination_rates
     - loci_2_recombination_rates
     - loci_3_recombination_rates
-    - loci_1_deme_mutation_rates
-    - loci_2_deme_mutation_rates
-    - loci_3_deme_mutation_rates
-    - loci_1_deme_mutation_magnitudes
-    - loci_2_deme_mutation_magnitudes
-    - loci_3_deme_mutation_magnitudes
+    #- loci_1_deme_mutation_rates
+    #- loci_2_deme_mutation_rates
+    #- loci_3_deme_mutation_rates
+    #- loci_1_deme_mutation_magnitudes
+    #- loci_2_deme_mutation_magnitudes
+    #- loci_3_deme_mutation_magnitudes
     # NOTE -- we need to have as many scaling factors as how many parameters 
     # we are simulating, and they need to be in the same order as the parameters 
     # in the name mapping above
   scaling_factors:
-    M_reproductive_advantage: 1.0
-    F_reproductive_advantage: 1.0
-    TARGET_CROWN_COLOR: 1.0
-    CROWN_COLOR_DECAY: 1.0
-    phen_1_gene_phen_map_constant: 1.0
-    phen_1_gene_phen_map_coef_0: 1.0
-    phen_1_gene_phen_map_coef_1: 1.0
-    phen_2_gene_phen_map_constant: 1.0
-    phen_2_gene_phen_map_coef_0: 1.0
-    phen_3_gene_phen_map_constant: 1.0
-    phen_3_gene_phen_map_coef_0: 1.0
+    #M_reproductive_advantage: 1.0
+    #F_reproductive_advantage: 1.0
+    #TARGET_CROWN_COLOR: 1.0
+    #CROWN_COLOR_DECAY: 1.0
+    #phen_1_gene_phen_map_constant: 1.0
+    #phen_1_gene_phen_map_coef_0: 1.0
+    #phen_1_gene_phen_map_coef_1: 1.0
+    #phen_2_gene_phen_map_constant: 1.0
+    #phen_2_gene_phen_map_coef_0: 1.0
+    #phen_3_gene_phen_map_constant: 1.0
+    #phen_3_gene_phen_map_coef_0: 1.0
     loci_1_recombination_rates: 1.0
     loci_2_recombination_rates: 1.0
     loci_3_recombination_rates: 1.0
-    loci_1_deme_mutation_rates: 1.0
-    loci_2_deme_mutation_rates: 1.0
-    loci_3_deme_mutation_rates: 1.0
-    loci_1_deme_mutation_magnitudes: 1.0
-    loci_2_deme_mutation_magnitudes: 1.0
-    loci_3_deme_mutation_magnitudes: 1.0
+    #loci_1_deme_mutation_rates: 1.0
+    #loci_2_deme_mutation_rates: 1.0
+    #loci_3_deme_mutation_rates: 1.0
+    #loci_1_deme_mutation_magnitudes: 1.0
+    #loci_2_deme_mutation_magnitudes: 1.0
+    #loci_3_deme_mutation_magnitudes: 1.0
+  
+  # Because there exists a valid domain for each parameter, 
+  # we need activation functions to ensure that the model's predictions fall within those domains.
+  activation_function:
+    #M_reproductive_advantage:
+    #  name: Sigmoid
+    #  bound: [1.0, 100]
+    #F_reproductive_advantage:
+    #  name: Sigmoid
+    #  bound: [1.0, 100]
+    #TARGET_CROWN_COLOR:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #CROWN_COLOR_DECAY:
+    #  name: Sigmoid
+    #  bound: [0.1, 10]
+    #phen_1_gene_phen_map_constant:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #phen_1_gene_phen_map_coef_0:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #phen_1_gene_phen_map_coef_1:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #phen_2_gene_phen_map_constant:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #phen_2_gene_phen_map_coef_0:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #phen_3_gene_phen_map_constant:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    #phen_3_gene_phen_map_coef_0:
+    #  name: Sigmoid
+    #  bound: [0.1, 100]
+    loci_1_recombination_rates:
+      name: Sigmoid
+      bound: [0.1, 1.0]
+    loci_2_recombination_rates:
+      name: Sigmoid
+      bound: [0.1, 1.0]
+    loci_3_recombination_rates:
+      name: Sigmoid
+      bound: [0.1, 1.0]
+    #loci_1_deme_mutation_rates:
+    #  name: Sigmoid
+    #  bound: [0.1, 1]
+    #loci_2_deme_mutation_rates:
+    #  name: Sigmoid
+    #  bound: [0.1, 1]
+    #loci_3_deme_mutation_rates:
+    #  name: Sigmoid
+    #  bound: [0.1, 1]
+    #loci_1_deme_mutation_magnitudes:
+    #  name: Sigmoid
+    #  bound: [0.1, 1]
+    #loci_2_deme_mutation_magnitudes:
+    #  name: Sigmoid
+    #  bound: [0.1, 1]
+    #loci_3_deme_mutation_magnitudes:
+    #  name: Sigmoid
+    #  bound: [0.1, 1]
 
   write_start: 0
   write_every: 1
@@ -64,23 +127,19 @@ Training:
 NeuralNet:
   type: MLP
   .input_size: 50
-  output_size: 20
+  output_size: 2
   hidden_sizes: [64, 64]
-  activation: ~
   optimizer: Adam
   num_threads: 1
-  learning_rate: 1e-2
+  learning_rate: 1e-1
   loss_function: MSELoss
   device: cpu
-  num_layers: 4
+  num_layers: 1
   nodes_per_layer: 
     default: ~
     layer_specific:
-      0: 25
-      1: 64
-      2: 64
-      3: 20
+      0: 2
   activation_funcs:
-    default: ReLU
+    default: ~
   biases:
     default: ~

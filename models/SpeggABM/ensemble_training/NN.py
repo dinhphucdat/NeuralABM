@@ -70,6 +70,24 @@ class SpeggABM_NN:
         # value is the name of the parameter
         self.to_learn = to_learn
 
+        # If there is a specialized activation function for the output layer 
+        # due to the domain constraints of the parameters, we are going to 
+        # add them here
+        self.param_activation_function = None
+        if 'param_activation_function' in __:
+            actis = __['param_activation_function']
+            self.param_activation_function = [
+                (lambda x, p=param: 
+                    (torch.Tensor([actis.get(p).get("bound")[0]]) + 
+                    base.neural_net.ACTIVATION_FUNCS.get(
+                        actis.get(p).get("name").lower(), [torch.nn.Sigmoid]
+                    # this is because there are [func, bool] in the key
+                    )[0]()(x) * 
+                    torch.Tensor([actis.get(p).get("bound")[1] - actis.get(p).get("bound")[0]])
+                    ))
+                    for param in self.to_learn
+            ]
+
         # Should check that the output of neural net should have the same number of 
         # parameters as the length of to_learn
         if (len(self.to_learn) != self.neural_net.layers[-1].out_features
@@ -181,9 +199,13 @@ class SpeggABM_NN:
             # Get the sum of predicted parameter space across all time steps
             # TODO: this is not very principled -- reconsider the logic
             predicted_parameters = torch.sum(predicted_parameters, axis=0)
-            # 3. Run Black-Box ABM (No gradients here)
-            
 
+            if self.param_activation_function is not None:
+                for i in range(len(predicted_parameters)):
+                    predicted_parameters[i] = (
+                        self.param_activation_function[i](predicted_parameters[i])
+                    )
+            
             # Get the parameters:
             for i, param in enumerate(self.to_learn):
                 self.simulated_parameters[i] = (
