@@ -216,10 +216,9 @@ class SpeggABM_NN:
 
             # Reconstructed the population with simulation with the predicted parameters
             # Loss
-            self.loss_function.batch_size = len(self.training_data[batch_idx : self.batches[batch_no + 1]])
             
             loss = self.loss_function(
-                predicted_parameters, self.training_data[batch_idx : self.batches[batch_no + 1]]
+                predicted_parameters, self.training_data, batch_idx, self.batches[batch_no + 1]
             )
 
             loss.backward()

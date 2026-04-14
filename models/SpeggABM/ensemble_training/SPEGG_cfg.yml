@@ -2,12 +2,12 @@ Data:
   delimiter: "\t"
   column_index: True
   column_name_or_idx: 5 
-  training_data_shape: [50, 1]
+  training_data_shape: [100, 1]
 
 Training:
   num_epochs: 20
   seed: 42
-  batch_size: 25
+  batch_size: 50
   loss_function: 
     name: MSELoss
   epsilon: 1e-2
@@ -95,13 +95,13 @@ Training:
     #  bound: [0.1, 100]
     loci_1_recombination_rates:
       name: Sigmoid
-      bound: [0.1, 1.0]
+      bound: [0.05, 1.0]
     loci_2_recombination_rates:
       name: Sigmoid
-      bound: [0.1, 1.0]
+      bound: [0.05, 1.0]
     loci_3_recombination_rates:
       name: Sigmoid
-      bound: [0.1, 1.0]
+      bound: [0.05, 1.0]
     #loci_1_deme_mutation_rates:
     #  name: Sigmoid
     #  bound: [0.1, 1]
@@ -126,7 +126,7 @@ Training:
 
 NeuralNet:
   type: MLP
-  .input_size: 50
+  .input_size: 100
   output_size: 2
   hidden_sizes: [64, 64]
   optimizer: Adam
@@ -138,7 +138,7 @@ NeuralNet:
   nodes_per_layer: 
     default: ~
     layer_specific:
-      0: 2
+      0: 3
   activation_funcs:
     default: ~
   biases:
