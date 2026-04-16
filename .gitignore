@@ -13,3 +13,4 @@ coverage.json
 **/Tutorial_Simulation
 !**/Tutorial_Simulation/
 **/Tutorial_Simulation/build/
+**/GenotypeDiffFecundity/build/

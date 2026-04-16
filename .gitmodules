@@ -5,3 +5,11 @@
 [submodule "models/SpeggABM/snpArcher"]
 	path = models/SpeggABM/snpArcher
 	url = https://github.com/harvardinformatics/snpArcher.git
+
+[submodule "models/SpeggGenoDiffABM/spegg"]
+	path = models/SpeggGenoDiffABM/spegg
+	url = https://github.com/dinhphucdat/spegg.git
+	branch = refactor_code
+[submodule "models/SpeggGenoDiffABM/snpArcher"]
+	path = models/SpeggGenoDiffABM/snpArcher
+	url = https://github.com/harvardinformatics/snpArcher.git
