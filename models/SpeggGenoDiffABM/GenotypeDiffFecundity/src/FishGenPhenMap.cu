@@ -60,7 +60,7 @@ void fin_color_phenotype::calculate_phenotype(inds *species)
     fin_color_calculator fin_color_functor(constants, coefficient_0);
 
     // Perform genotype-phenotype map operation with for_each.
-    thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(species->deme.begin() + index_case, species->fgenotype[2].begin() + index_case, species->mgenotype[2].begin() + index_case, species->phenotype[FIN_COLOR_INDEX].begin() + index_case)),
-                     thrust::make_zip_iterator(thrust::make_tuple(species->deme.begin() + index_case + num_kids, species->fgenotype[2].begin() + index_case + num_kids, species->mgenotype[2].begin() + index_case + num_kids, species->phenotype[FIN_COLOR_INDEX].begin() + index_case + num_kids)),
+    thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(species->deme.begin() + index_case, species->fgenotype[2].begin() + index_case, species->mgenotype[2].begin() + index_case, species->phenotype[phenotype_index].begin() + index_case)),
+                     thrust::make_zip_iterator(thrust::make_tuple(species->deme.begin() + index_case + num_kids, species->fgenotype[2].begin() + index_case + num_kids, species->mgenotype[2].begin() + index_case + num_kids, species->phenotype[phenotype_index].begin() + index_case + num_kids)),
                      fin_color_functor);
 }
