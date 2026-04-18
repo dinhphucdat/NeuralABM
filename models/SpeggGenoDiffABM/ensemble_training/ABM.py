@@ -5,6 +5,7 @@ class Loss(torch.nn.Module):
     The custom loss function
     """
     def __init__(self, loss_func, epsilon=1e-3):
+        super(Loss, self).__init__()
         self.loss_func = loss_func
         self.epsilon = epsilon
     

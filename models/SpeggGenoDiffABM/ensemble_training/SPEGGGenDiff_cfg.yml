@@ -1,8 +1,9 @@
 Data:
-  delimiter: "\t"
-  column_index: True
-  column_name_or_idx: 5 
-  training_data_shape: [100, 1]
+  nloci: 3
+  pos_loci_interest: 0 # The column position of the loci of interest in the
+  pos_col_allele_interest: 5 # The column position of the allele of interest in the
+  output_sep: "\t" # The separator used in the output from the vcftools (default is tab)
+  training_data_shape: [10, 1]
 
 Training:
   num_epochs: 20

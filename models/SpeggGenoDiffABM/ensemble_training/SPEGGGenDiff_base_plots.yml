@@ -5,7 +5,7 @@
 #   ╚╝ ╩ ╩╩╚═╩╩ ╩╚═╝╩═╝╚═╝╚═╝
 # ======================================================================================================================
 .variables:
-  base_path:        &base_path    data/SpeggABM
+  base_path:        &base_path    data/SpeggGenoDiffABM/
 
 .meta_ops:
   dag_options:
