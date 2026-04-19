@@ -19,7 +19,6 @@ SIMULATION_CONF = os.path.join(
 
 from Tutorial_Simulation import simulate
 
-from .utils import *
 from .ABM import *
 from .DataGeneration import *
 from .NN import *

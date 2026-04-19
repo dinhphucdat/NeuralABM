@@ -6,9 +6,9 @@ Data:
   training_data_shape: [10, 1]
 
 Training:
-  num_epochs: 20
+  num_epochs: 50
   seed: 42
-  batch_size: 50
+  batch_size: 10
   loss_function: 
     name: MSELoss
   epsilon: 1e-2
@@ -127,9 +127,6 @@ Training:
 
 NeuralNet:
   type: MLP
-  .input_size: 100
-  output_size: 2
-  hidden_sizes: [64, 64]
   optimizer: Adam
   num_threads: 1
   learning_rate: 1e-1

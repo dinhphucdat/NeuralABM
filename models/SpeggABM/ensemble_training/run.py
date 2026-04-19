@@ -76,8 +76,7 @@ if __name__ == "__main__":
     data_gen_cfgs = cfgs['Data']
     # Generate training data
     training_data = generate_training_data(
-        data_gen_cfgs, 
-        process_output(out.stdout, delimiter=data_gen_cfgs['delimiter'])
+        data_gen_cfgs
     ).to(device)
 
     # Initialise the neural net
