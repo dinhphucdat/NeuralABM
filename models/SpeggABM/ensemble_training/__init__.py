@@ -22,5 +22,5 @@ from Tutorial_Simulation import simulate
 from .ABM import *
 from .DataGeneration import *
 from .NN import *
-
+from .trend import *
 

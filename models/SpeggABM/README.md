@@ -172,7 +172,7 @@ Tip for handling batch size and time step mismatch: Take the first simulated tim
 
 #### Generating training dataset from `snpArcher` and `vcftools`
 
-In the [`DataGeneration.py`](/models/SpeggABM/ensemble_training/DataGeneration.py), there is a function that executes the [`setup_spegg.sh`](/models/SpeggABM/setup_spegg.sh) script, which essentially runs the `snpArcher` tools to create `vcf` files and then runs `vcftools` to parse those `vcf` files, to generate a matrix that is to be the training dataset.
+In the [`DataGeneration.py`](/models/SpeggABM/ensemble_training/DataGeneration.py), there is a function that executes the [`setup_spegg.sh`](/models/SpeggABM/ensemble_training/setup_spegg.sh) script, which essentially runs the `snpArcher` tools to create `vcf` files and then runs `vcftools` to parse those `vcf` files, to generate a matrix that is to be the training dataset.
 
 #### Neural network architecture & pipeline
 

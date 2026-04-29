@@ -6,7 +6,7 @@ Data:
   training_data_shape: [10, 1]
 
 Training:
-  num_epochs: 20
+  num_epochs: 50
   seed: 42
   batch_size: 10
   loss_function: 

@@ -38,11 +38,11 @@ struct fecundity_calculator
     {
         int ind_deme = thrust::get<0>(t);
         thrust::get<5>(t) = map_constant[ind_deme] + 
-            map_coefficient_0[ind_deme] * 0.5 * 3 * (
+            map_coefficient_0[ind_deme] * 0.5 * (
                 thrust::get<1>(t) + 
                 thrust::get<2>(t)
             ) + 
-            map_coefficient_1[ind_deme] * 0.5 * (
+            map_coefficient_1[ind_deme] * 0.5 * 4 * (
                 thrust::get<3>(t) + 
                 thrust::get<4>(t)
             );

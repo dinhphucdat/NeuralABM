@@ -118,7 +118,6 @@ if __name__ == "__main__":
             f"   Completed epoch {i+1} / {training_cfgs["num_epochs"]}; "
             f"   current loss: {model.current_loss}"
         )
-    
     log.info("   Simulation run finished.")
     log.info("   Wrapping up ...")
     h5file.close()
